@@ -43,7 +43,7 @@ class App extends Component {
           sprite: data.sprites.front_default,
           entry: data.id
         })
-        data.types.map((e, i) => {
+        data.types.forEach((e, i) => {
           let newTypes = this.state.types
           newTypes.push(data.types[i].type.name)
           this.setState({ types: newTypes })
