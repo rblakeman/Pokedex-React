@@ -8,17 +8,24 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center'
   },
-  text: {
-    margin: 10
+  input: {
+    margin: '10px'
   },
   button: {
-    margin: 10
+    backgroundColor: '#ee1515',
+    color: 'white',
+    margin: '0px 5px',
+    textTransform: 'none'
   }
 }
 
 export default class Input extends Component {
-  state = {
-    value: ''
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      value: ''
+    }
   }
 
   onInput = (event) => {
@@ -34,9 +41,9 @@ export default class Input extends Component {
     return (
       <div style={styles.container}>
         <TextField
-          id="outlined-full-width"
+          // id="outlined-full-width"
           label="Name or Number"
-          style={styles.text}
+          style={styles.input}
           placeholder="Charmander"
           // helperText="Type a name or entry number"
           margin="normal"
@@ -46,10 +53,15 @@ export default class Input extends Component {
           }}
           onChange={this.onInput}
           value={this.state.value}
+          onKeyPress={(ev) => {
+            if (ev.key === 'Enter') {
+              ev.preventDefault()
+              this.onSubmit()
+            }
+          }}
         />
         <Button
-          variant="contained"
-          color="secondary"
+          variant="outlined"
           style={styles.button}
           onClick={this.onSubmit}
         >

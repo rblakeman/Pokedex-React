@@ -9,45 +9,90 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center'
   },
-  title: { margin: 20 },
-  inputs: { padding: 10 }
+  title: { margin: '20px', fontSize: '24px' },
+  inputs: { padding: '10px' }
 }
+
+// #ee1515 red
+// #f00000 red
+// #222224 black
+// #f0f0f0 white
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.PokeAPI = this.PokeAPI.bind(this)
     this.PokeAPIitem('4')
-  }
 
-  state = {
-    entry: '',
-    name: '',
-    sprite: '',
-    types: []
+    this.state = {
+      entry: '',
+      name: '',
+      sprite: '',
+      types: [],
+      stats: [],
+      moves: [],
+      height: 0,
+      weight: 0
+    }
   }
 
   PokeAPI(entry) {
     fetch(`https://pokeapi.co/api/v2/pokemon/${entry}/`)
       .then((response) => {
         if (!response.ok) {
-          console.log('caught')
-          return
+          let failedRespones = [
+            'You missed the Pokemon!',
+            'Darn! The Pokemon broke free!',
+            'Aww! It appeared to be caught!',
+            'Shoot! It was so close too!'
+          ]
+          console.log(
+            failedRespones[Math.floor(Math.random() * failedRespones.length)]
+          )
+          return false
         }
         return response.json()
       })
       .then((data) => {
-        this.setState({ types: [] })
+        if (!data) return
+        // console.log(data)
+
+        let newTypes = []
+        data.types.forEach((e) => {
+          newTypes.push(e.type.name)
+        })
+
+        let newStats = []
+        data.stats.forEach((e) => {
+          newStats.push({
+            name: e.stat.name,
+            base_stat: e.base_stat,
+            effort: e.effort
+          })
+        })
+
+        let newMoves = []
+        data.moves.forEach((e, i) => {
+          newMoves.push({
+            name: e.move.name,
+            version_group_details: e.version_group_details
+          })
+        })
+
         this.setState({
           name: data.name,
           sprite: data.sprites.front_default,
-          entry: data.id
+          entry: data.id,
+          types: newTypes,
+          stats: newStats,
+          moves: newMoves,
+          height: data.height,
+          weight: data.weight
         })
-        data.types.forEach((e, i) => {
-          let newTypes = this.state.types
-          newTypes.push(data.types[i].type.name)
-          this.setState({ types: newTypes })
-        })
+        console.log(
+          `All right! ${data.name.charAt(0).toUpperCase() +
+            data.name.substr(1)} was caught!`
+        )
       })
   }
 
@@ -69,7 +114,7 @@ class App extends Component {
   render() {
     return (
       <div className="App" style={styles.container}>
-        <div style={styles.title}>Pokedex Lookup</div>
+        <div style={styles.title}>Pokédex Lookup</div>
         <div style={styles.inputs}>
           <Input onInputSubmit={this.PokeAPI} />
         </div>

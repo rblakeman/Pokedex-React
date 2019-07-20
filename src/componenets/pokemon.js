@@ -2,23 +2,24 @@ import React, { Component } from 'react'
 import Card from '@material-ui/core/Card'
 const styles = {
   card: {
-    margin: 20,
-    width: 200,
-    height: 200,
+    margin: '20px',
+    width: '200px',
+    height: '200px',
     display: 'flex',
+    backgroundColor: '#f0f0f0',
     flexDirection: 'column',
-    backgroundColor: '#eee',
     alignItems: 'center'
   },
   top: {
-    margin: 10
+    margin: '10px'
   },
-  sprite: { margin: -15 },
-  bottom: { margin: 10 }
+  sprite: { margin: '-15px' },
+  bottom: { margin: '10px' }
 }
 
 export default class Pokemon extends Component {
   firstUpper(str) {
+    if (typeof str === 'undefined') return null
     return str.charAt(0).toUpperCase() + str.substr(1)
   }
 
@@ -49,7 +50,7 @@ export default class Pokemon extends Component {
         </div>
         <div style={styles.sprite}>
           <img
-            style={{ width: 150, height: 150 }}
+            style={{ width: '150px', height: '150px' }}
             src={this.props.sprite}
             alt="pokemon sprite"
           />
