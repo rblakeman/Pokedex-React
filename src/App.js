@@ -18,7 +18,7 @@ const LOADING_STATE = {
   entry: '',
   name: '',
   sprite: '',
-  types: ['-'],
+  types: ['???'],
   stats: [],
   moves: [],
   height: '',
@@ -68,7 +68,7 @@ class App extends Component {
 
   PokeAPI(entry) {
     this.setState({
-      ...{ LOADING_STATE }
+      ...LOADING_STATE
     })
     fetch(`https://pokeapi.co/api/v2/pokemon/${entry}/`)
       .then((response) => {
@@ -133,7 +133,7 @@ class App extends Component {
   PokeAPIitem(item) {
     // uncomment when incorporating items
     // this.setState({
-    //   ...{ LOADING_STATE }
+    //   ...LOADING_STATE
     // })
     fetch(`https://pokeapi.co/api/v2/item/${item}/`)
       .then((response) => {

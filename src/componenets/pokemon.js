@@ -34,7 +34,7 @@ const styles = {
     margin: '10px'
   },
   sprite: {
-    // margin: '-15px'
+    margin: '-5px 0px -5px 0px'
   },
   bottom: {
     height: '100%',
@@ -50,10 +50,20 @@ const styles = {
   // },
   typeList: {
     // margin: '0px 0px 10px 0px',
-    textAlign: 'center'
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   type: {
-    margin: '0px 0px 10px 0px'
+    width: '90px',
+    height: '30px',
+    color: 'white',
+    backgroundColor: '#68A090',
+    borderRadius: '40px',
+
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 
   right: {
@@ -138,8 +148,40 @@ export default class Pokemon extends Component {
             {/* <div style={styles.typeHeader}>Types</div> */}
             <div style={styles.typeList}>
               {types.map((e, i) => {
+                let typeColor = '#68A090'
+                if (e === 'normal') typeColor = '#A8A878'
+                else if (e === 'fire') typeColor = '#F08030'
+                else if (e === 'fighting') typeColor = '#C03028'
+                else if (e === 'water') typeColor = '#6890F0'
+                else if (e === 'flying') typeColor = '#A890F0'
+                else if (e === 'grass') typeColor = '#78C850'
+                else if (e === 'poison') typeColor = '#A040A0'
+                else if (e === 'electric') typeColor = '#F8D030'
+                else if (e === 'ground') typeColor = '#E0C068'
+                else if (e === 'psychic') typeColor = '#F85888'
+                else if (e === 'rock') typeColor = '#B8A038'
+                else if (e === 'ice') typeColor = '#98D8D8'
+                else if (e === 'bug') typeColor = '#A8B820'
+                else if (e === 'dragon') typeColor = '#7038F8'
+                else if (e === 'ghost') typeColor = '#705898'
+                else if (e === 'dark') typeColor = '#705848'
+                else if (e === 'steel') typeColor = '#B8B8D0'
+                else if (e === 'fairy') typeColor = '#EE99AC'
+                else typeColor = '#68A090'
+
                 return (
-                  <div style={styles.type} key={i}>
+                  <div
+                    style={
+                      i > 0
+                        ? {
+                            ...styles.type,
+                            marginTop: '8px',
+                            backgroundColor: typeColor
+                          }
+                        : { ...styles.type, backgroundColor: typeColor }
+                    }
+                    key={i}
+                  >
                     {this.firstUpper(e)}
                   </div>
                 )
