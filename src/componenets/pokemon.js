@@ -100,7 +100,11 @@ export default class Pokemon extends Component {
     } = this.props
 
     return (
-      <Card style={styles.card}>
+      <Card
+        style={
+          this.props.shrink ? { ...styles.card, margin: '0px' } : styles.card
+        }
+      >
         <div style={styles.left}>
           <div style={styles.top}>
             <div>{this.attachPound(number)} </div>

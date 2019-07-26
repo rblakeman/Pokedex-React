@@ -34,9 +34,36 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.PokeAPI = this.PokeAPI.bind(this)
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
     this.PokeAPIitem('4')
 
-    this.state = LOADING_STATE
+    this.state = {
+      ...LOADING_STATE,
+      windowWidth: 0,
+      windowHeight: 0,
+      shrink: false
+    }
+  }
+
+  componentDidMount() {
+    this.updateWindowDimensions()
+    window.addEventListener('resize', this.updateWindowDimensions)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions)
+  }
+
+  updateWindowDimensions() {
+    if (window.innerHeight < 500) {
+      if (!this.state.shrink) this.setState({ shrink: true })
+    } else {
+      if (this.state.shrink) this.setState({ shrink: false })
+    }
+    this.setState({
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight
+    })
   }
 
   PokeAPI(entry) {
@@ -127,10 +154,37 @@ class App extends Component {
     // console.log(this.state)
     return (
       <div className="App" style={styles.container}>
-        <div style={styles.title}>Pokédex Lookup</div>
-        <div style={styles.inputs}>
-          <Input onInputSubmit={this.PokeAPI} />
-        </div>
+        {this.state.shrink ? (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center'
+            }}
+          >
+            <div
+              style={{
+                margin: '10px',
+                fontSize: '24px'
+              }}
+            >
+              Pokédex
+            </div>
+            <div style={{ padding: '5px' }}>
+              <Input onInputSubmit={this.PokeAPI} shrink={this.state.shrink} />
+            </div>
+          </div>
+        ) : null}
+        {this.state.shrink ? null : (
+          <div style={styles.title}>Pokédex Lookup</div>
+        )}
+
+        {this.state.shrink ? null : (
+          <div style={styles.inputs}>
+            <Input onInputSubmit={this.PokeAPI} />
+          </div>
+        )}
+
         <Pokemon
           name={this.state.name}
           number={this.state.entry}
@@ -141,6 +195,7 @@ class App extends Component {
           height={this.state.height}
           weight={this.state.weight}
           loaded={this.state.loaded}
+          shrink={this.state.shrink}
         />
       </div>
     )
