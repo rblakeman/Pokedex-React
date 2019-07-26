@@ -13,6 +13,18 @@ const styles = {
   inputs: { padding: '10px' }
 }
 
+const LOADING_STATE = {
+  loaded: false,
+  entry: '',
+  name: '',
+  sprite: '',
+  types: ['-'],
+  stats: [],
+  moves: [],
+  height: '',
+  weight: ''
+}
+
 // #ee1515 red
 // #f00000 red
 // #222224 black
@@ -24,19 +36,13 @@ class App extends Component {
     this.PokeAPI = this.PokeAPI.bind(this)
     this.PokeAPIitem('4')
 
-    this.state = {
-      entry: '',
-      name: '',
-      sprite: '',
-      types: [],
-      stats: [],
-      moves: [],
-      height: 0,
-      weight: 0
-    }
+    this.state = LOADING_STATE
   }
 
   PokeAPI(entry) {
+    this.setState({
+      ...{ LOADING_STATE }
+    })
     fetch(`https://pokeapi.co/api/v2/pokemon/${entry}/`)
       .then((response) => {
         if (!response.ok) {
@@ -87,7 +93,8 @@ class App extends Component {
           stats: newStats,
           moves: newMoves,
           height: data.height,
-          weight: data.weight
+          weight: data.weight,
+          loaded: true
         })
         console.log(
           `All right! ${data.name.charAt(0).toUpperCase() +
@@ -97,6 +104,10 @@ class App extends Component {
   }
 
   PokeAPIitem(item) {
+    // uncomment when incorporating items
+    // this.setState({
+    //   ...{ LOADING_STATE }
+    // })
     fetch(`https://pokeapi.co/api/v2/item/${item}/`)
       .then((response) => {
         return response.json()
@@ -106,12 +117,14 @@ class App extends Component {
           name: data.name,
           sprite: data.sprites.default,
           entry: '',
-          types: []
+          types: [],
+          loaded: true
         })
       })
   }
 
   render() {
+    // console.log(this.state)
     return (
       <div className="App" style={styles.container}>
         <div style={styles.title}>Pokédex Lookup</div>
@@ -123,6 +136,11 @@ class App extends Component {
           number={this.state.entry}
           sprite={this.state.sprite}
           types={this.state.types}
+          stats={this.state.stats}
+          moves={this.state.moves}
+          height={this.state.height}
+          weight={this.state.weight}
+          loaded={this.state.loaded}
         />
       </div>
     )
