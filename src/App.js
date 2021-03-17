@@ -44,6 +44,8 @@ class App extends Component {
             windowHeight: 0,
             shrink: false
         };
+
+        console.log('last updated: March 16, 2021');
     }
 
     componentDidMount() {
