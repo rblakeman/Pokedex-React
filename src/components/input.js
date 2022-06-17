@@ -29,46 +29,46 @@ export default class Input extends Component {
         };
     }
 
-  onInput = (event) => {
-      this.setState({ value: event.target.value });
-  }
+    onInput = (event) => {
+        this.setState({ value: event.target.value });
+    };
 
-  onSubmit = (e) => {
-      if (this.state.value.length > 0)
-          this.props.onInputSubmit(this.state.value.toLowerCase());
-  }
+    onSubmit = (e) => {
+        if (this.state.value.length > 0)
+            this.props.onInputSubmit(this.state.value.toLowerCase());
+    };
 
-  render() {
-      return (
-          <div style={styles.container}>
-              <TextField
-                  // id="outlined-full-width"
-                  label="Name or Number"
-                  style={styles.input}
-                  placeholder="Charmander"
-                  // helperText="Type a name or entry number"
-                  margin="normal"
-                  variant="outlined"
-                  InputLabelProps={{
-                      shrink: true
-                  }}
-                  onChange={this.onInput}
-                  value={this.state.value}
-                  onKeyPress={(ev) => {
-                      if (ev.key === 'Enter') {
-                          ev.preventDefault();
-                          this.onSubmit();
-                      }
-                  }}
-              />
-              <Button
-                  variant="outlined"
-                  style={styles.button}
-                  onClick={this.onSubmit}
-              >
+    render() {
+        return (
+            <div style={styles.container}>
+                <TextField
+                    // id="outlined-full-width"
+                    label="Name or Number"
+                    style={styles.input}
+                    placeholder="Charmander"
+                    // helperText="Type a name or entry number"
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                        shrink: true
+                    }}
+                    onChange={this.onInput}
+                    value={this.state.value}
+                    onKeyPress={(ev) => {
+                        if (ev.key === 'Enter') {
+                            ev.preventDefault();
+                            this.onSubmit();
+                        }
+                    }}
+                />
+                <Button
+                    variant="outlined"
+                    style={styles.button}
+                    onClick={this.onSubmit}
+                >
           Submit
-              </Button>
-          </div>
-      );
-  }
+                </Button>
+            </div>
+        );
+    }
 }
