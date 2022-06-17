@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import './App.css';
-import Input from './componenets/input';
-import Pokemon from './componenets/pokemon';
+import Input from './components/input';
+import Pokemon from './components/pokemon';
 
 const styles = {
     container: {
@@ -45,7 +45,7 @@ class App extends Component {
             shrink: false
         };
 
-        console.log('last updated: March 16, 2021');
+        console.log('last updated: June 17, 2022');
     }
 
     componentDidMount() {
