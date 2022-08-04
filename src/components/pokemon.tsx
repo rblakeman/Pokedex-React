@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Card from '@material-ui/core/Card';
+// @ts-expect-error IGNORE
 import logo from '../logo.svg';
 import LaunchIcon from '@material-ui/icons/Launch';
 
@@ -11,7 +12,7 @@ const styles = {
         height: '300px',
         display: 'flex',
         backgroundColor: '#f0f0f0',
-        flexDirection: 'row',
+        flexDirection: 'row' as 'row',
         justifyContent: 'space-evenly'
     },
 
@@ -24,7 +25,7 @@ const styles = {
     left: {
         width: '100%',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'column' as 'column',
         alignItems: 'center'
     },
     top: {
@@ -40,7 +41,7 @@ const styles = {
         height: '100%',
         width: '100%',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'column' as 'column',
         justifyContent: 'space-between',
         margin: '0px 0px 10px 0px'
     },
@@ -51,7 +52,7 @@ const styles = {
     typeList: {
     // margin: '0px 0px 10px 0px',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'column' as 'column',
         alignItems: 'center'
     },
     type: {
@@ -70,11 +71,11 @@ const styles = {
         margin: '10px 0px 10px 0px',
         width: '100%',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column' as 'column'
     },
     moveHeader: {
         fontWeight: 'bold',
-        textAlign: 'center'
+        textAlign: 'center' as 'center'
     },
     moveList: {
         overflow: 'scroll'
@@ -82,14 +83,28 @@ const styles = {
     move: {}
 };
 
-export default class Pokemon extends Component {
-    firstUpper(str) {
+type Props = {
+    name: string;
+    number: string;
+    sprite: string;
+    types: string[];
+    moves: { name: string; }[];
+    height: string;
+    weight: string;
+    loaded: boolean;
+    shrink: boolean;
+};
+type State = {};
+
+export default class Pokemon extends Component<Props, State> {
+    firstUpper(str: string) {
         if (typeof str === 'undefined') return null;
 
         return str.charAt(0).toUpperCase() + str.substr(1);
     }
 
-    attachPound(str) {
+    attachPound(str: string) {
+        // @ts-expect-error IGNORE
         if (isNaN(str) || str.length === 0) return str;
 
         return '#' + str;
@@ -141,7 +156,7 @@ export default class Pokemon extends Component {
                             <img
                                 src={logo}
                                 className="App-logo"
-                                style={loaded ? { ...styles.logo, hidden: true } : styles.logo}
+                                style={loaded ? { ...styles.logo, display: 'hidden' } : styles.logo}
                                 alt="react logo"
                             />
                         )}

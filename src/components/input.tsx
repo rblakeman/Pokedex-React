@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 const styles = {
     container: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'row' as 'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -16,59 +16,58 @@ const styles = {
         backgroundColor: '#ee1515',
         color: 'white',
         margin: '0px 5px',
-        textTransform: 'none'
+        textTransform: 'none' as 'none'
     }
 };
 
-export default class Input extends Component {
-    constructor(props) {
-        super(props);
+type Props = {
+    onInputSubmit: (value: string) => void;
+};
+type State = {
+    value: string;
+};
 
-        this.state = {
-            value: ''
-        };
-    }
+export default function Input(props: Props) {
+    const [value, setValue] = useState('');
 
-    onInput = (event) => {
-        this.setState({ value: event.target.value });
+    const onInput = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setValue(event.target.value);
     };
 
-    onSubmit = (e) => {
-        if (this.state.value.length > 0)
-            this.props.onInputSubmit(this.state.value.toLowerCase());
+    const onSubmit = () => {
+        if (value.length > 0)
+            props.onInputSubmit(value.toLowerCase());
     };
 
-    render() {
-        return (
-            <div style={styles.container}>
-                <TextField
-                    // id="outlined-full-width"
-                    label="Name or Number"
-                    style={styles.input}
-                    placeholder="Charmander"
-                    // helperText="Type a name or entry number"
-                    margin="normal"
-                    variant="outlined"
-                    InputLabelProps={{
-                        shrink: true
-                    }}
-                    onChange={this.onInput}
-                    value={this.state.value}
-                    onKeyPress={(ev) => {
-                        if (ev.key === 'Enter') {
-                            ev.preventDefault();
-                            this.onSubmit();
-                        }
-                    }}
-                />
-                <Button
-                    variant="outlined"
-                    style={styles.button}
-                    onClick={this.onSubmit}
-                >
-          Submit
-                </Button>
-            </div>
-        );
-    }
+    return (
+        <div style={styles.container}>
+            <TextField
+                // id="outlined-full-width"
+                label="Name or Number"
+                style={styles.input}
+                placeholder="Charmander"
+                // helperText="Type a name or entry number"
+                margin="normal"
+                variant="outlined"
+                InputLabelProps={{
+                    shrink: true
+                }}
+                onChange={onInput}
+                value={value}
+                onKeyPress={(ev) => {
+                    if (ev.key === 'Enter') {
+                        ev.preventDefault();
+                        onSubmit();
+                    }
+                }}
+            />
+            <Button
+                variant="outlined"
+                style={styles.button}
+                onClick={onSubmit}
+            >
+        Submit
+            </Button>
+        </div>
+    );
 }

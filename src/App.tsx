@@ -7,7 +7,7 @@ import Pokemon from './components/pokemon';
 const styles = {
     container: {
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'column' as 'column',
         alignItems: 'center'
     },
     title: { margin: '20px', fontSize: '24px' },
@@ -31,8 +31,34 @@ const LOADING_STATE = {
 // #222224 black
 // #f0f0f0 white
 
-class App extends Component {
-    constructor(props) {
+type Stats = {
+    name: string;
+    base_stat: number;
+    effort: number;
+};
+type Moves = {
+    name: string;
+    version_group_details: {};
+};
+
+type Props = {};
+type State = {
+    loaded: boolean;
+    entry: string;
+    name: string;
+    sprite: string;
+    types: string[];
+    stats: Stats[];
+    moves: Moves[];
+    height: string;
+    weight: string;
+    windowWidth: number;
+    windowHeight: number;
+    shrink: boolean;
+};
+
+class App extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.PokeAPI = this.PokeAPI.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -45,7 +71,7 @@ class App extends Component {
             shrink: false
         };
 
-        console.log('last updated: June 17, 2022');
+        console.log('last updated: Aug 3, 2022');
     }
 
     componentDidMount() {
@@ -69,21 +95,21 @@ class App extends Component {
         });
     }
 
-    PokeAPI(entry) {
+    PokeAPI(entry: string) {
         this.setState({
             ...LOADING_STATE
         });
         fetch(`https://pokeapi.co/api/v2/pokemon/${entry}/`)
             .then((response) => {
                 if (!response.ok) {
-                    let failedRespones = [
+                    let failedResponses = [
                         'You missed the Pokemon!',
                         'Darn! The Pokemon broke free!',
                         'Aww! It appeared to be caught!',
                         'Shoot! It was so close too!'
                     ];
                     console.log(
-                        failedRespones[Math.floor(Math.random() * failedRespones.length)]
+                        failedResponses[Math.floor(Math.random() * failedResponses.length)]
                     );
 
                     return false;
@@ -93,27 +119,40 @@ class App extends Component {
             })
             .then((data) => {
                 if (!data) return;
-                // console.log(data)
 
-                let newTypes = [];
-                data.types.forEach((e) => {
-                    newTypes.push(e.type.name);
+
+                let newTypes: string[] = [];
+                type Type = {
+                    slot: string,
+                    type: { name: string, url: string }
+                };
+                data.types.forEach((entry: Type) => {
+                    newTypes.push(entry.type.name);
                 });
 
-                let newStats = [];
-                data.stats.forEach((e) => {
+                let newStats: Stats[] = [];
+                type Stat = {
+                    base_stat: number;
+                    effort: number;
+                    stat: { name: string, url: string }
+                };
+                data.stats.forEach((entry: Stat) => {
                     newStats.push({
-                        name: e.stat.name,
-                        base_stat: e.base_stat,
-                        effort: e.effort
+                        name: entry.stat.name,
+                        base_stat: entry.base_stat,
+                        effort: entry.effort
                     });
                 });
 
-                let newMoves = [];
-                data.moves.forEach((e, i) => {
+                let newMoves: Moves[] = [];
+                type Move = {
+                    move: { name: string, url: string };
+                    version_group_details: {  }[];
+                };
+                data.moves.forEach((entry: Move) => {
                     newMoves.push({
-                        name: e.move.name,
-                        version_group_details: e.version_group_details
+                        name: entry.move.name,
+                        version_group_details: entry.version_group_details
                     });
                 });
 
@@ -135,7 +174,7 @@ class App extends Component {
             });
     }
 
-    PokeAPIitem(item) {
+    PokeAPIitem(item: string) {
         // uncomment when incorporating items
         // this.setState({
         //   ...LOADING_STATE
@@ -156,7 +195,6 @@ class App extends Component {
     }
 
     render() {
-        // console.log(this.state)
         return (
             <div className="App" style={styles.container}>
                 {this.state.shrink ? (
@@ -170,7 +208,7 @@ class App extends Component {
                             Pokédex
                         </div>
                         <div style={{ padding: '5px' }}>
-                            <Input onInputSubmit={this.PokeAPI} shrink={this.state.shrink} />
+                            <Input onInputSubmit={this.PokeAPI} />
                         </div>
                     </div>
                 ) : null}
@@ -189,7 +227,6 @@ class App extends Component {
                     number={this.state.entry}
                     sprite={this.state.sprite}
                     types={this.state.types}
-                    stats={this.state.stats}
                     moves={this.state.moves}
                     height={this.state.height}
                     weight={this.state.weight}
